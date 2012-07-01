@@ -1,40 +1,26 @@
-/********************************************************************************
+/*
 
-USI TWI Slave driver.
+Copyright 2007 Donald R. Blake <donblake at worldnet.att.net>
+Copyright 2010 Jochen Toppe    <jochen.toppe at jtoee.com>
+Copyright 2011 Ben Galvin      <bgalvin at fastmail.fm>
+Copyright 2012 Niclas Hoyer    <niclas at verbugt.de>
 
-Created by Donald R. Blake. donblake at worldnet.att.net
-Adapted by Jochen Toppe, jochen.toppe at jtoee.com
-Adapted by Ben Galvin, bgalvin at fastmail.fm
+This file is part of Usitwi.
 
----------------------------------------------------------------------------------
+Usitwi is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-Created from Atmel source files for Application Note AVR312: Using the USI Module
-as an I2C slave.
+Usitwi is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-This program is free software; you can redistribute it and/or modify it under the
-terms of the GNU General Public License as published by the Free Software
-Foundation; either version 2 of the License, or (at your option) any later
-version.
+You should have received a copy of the GNU General Public License
+along with Usitwi.  If not, see <http://www.gnu.org/licenses/>.
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-
----------------------------------------------------------------------------------
-
-Change Activity:
-
-    Date       Description
-   ------      -------------
-  16 Mar 2007  Created.
-  27 Mar 2007  Added support for ATtiny261, 461 and 861.
-  26 Apr 2007  Fixed ACK of slave address on a read.
-  04 Jul 2007  Fixed USISIF in ATtiny45 def
-  12 Dev 2009  Added callback functions for data requests
-  12 Apr 2011  Added read/write register callbacks
-********************************************************************************/
-
-
+*/
 
 /********************************************************************************
 
