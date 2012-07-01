@@ -12,3 +12,6 @@ compile:
 
 program:
 	$(AVRDUDE) -c usbasp -p $(MMCU) -v -e -U flash:w:i2ctest.hex
+
+clean:
+	rm -f *.o *.elf *.hex
