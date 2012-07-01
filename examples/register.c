@@ -3,7 +3,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay_basic.h>
-#include "usiTwiSlave.h"
+#include "../src/slave.h"
 
 #define I2C_SLAVE_ADDR  0x26
 #define LED PB3

@@ -5,13 +5,13 @@ AVRDUDE=sudo avrdude
 AVRSIZE=avr-size
 
 compile:
-	$(CC) -mmcu=$(MMCU) -Os -g i2ctest.c usiTwiSlave.c -o i2ctest.elf
-	$(OBJCPY) -j .text -j .data -O ihex i2ctest.elf i2ctest.hex
-	$(OBJCPY) -j .eeprom --change-section-lma .eeprom=0 -O ihex i2ctest.elf i2ctest.eeprom.hex
-	$(AVRSIZE) -A -t i2ctest.elf
+	$(CC) -mmcu=$(MMCU) -Os -g examples/register.c src/slave.c -o out/register.elf
+	$(OBJCPY) -j .text -j .data -O ihex out/register.elf out/register.hex
+	$(OBJCPY) -j .eeprom --change-section-lma .eeprom=0 -O ihex out/register.elf out/register.eeprom.hex
+	$(AVRSIZE) -A -t out/register.elf
 
 program:
-	$(AVRDUDE) -c usbasp -p $(MMCU) -v -e -U flash:w:i2ctest.hex
+	$(AVRDUDE) -c usbasp -p $(MMCU) -v -e -U flash:w:out/register.hex
 
 clean:
-	rm -f *.o *.elf *.hex
+	rm -f out/*.o out/*.elf out/*.hex

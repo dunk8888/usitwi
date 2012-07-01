@@ -31,7 +31,7 @@ along with Usitwi.  If not, see <http://www.gnu.org/licenses/>.
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <stdbool.h>
-#include "usiTwiSlave.h"
+#include "slave.h"
 
 
 
