@@ -40,32 +40,57 @@ uint8_t adcRead() {
 static volatile uint8_t i2cReg2 = 0;
 static volatile uint8_t i2cReg3 = 0;
 
+uint8_t currentRegister = 0xFF;
+
 // A callback triggered when the i2c master attempts to read from a register.
-uint8_t i2cReadFromRegister(uint8_t reg)
+uint8_t onTWIRead()
 {
-	switch (reg)
-	{
+	switch(currentRegister) {
 		case 0: 
 			return 10;
+		break;
 		case 1:
 			return adcRead();
+		break;
+		case 2:
+			return i2cReg2;
+		break;
+		case 3:
+			return i2cReg3;
+		break;
 		default:
-			return 0xff;
+			return 0xFF;
+		break;
 	}
 }
 
 // A callback triggered when the i2c master attempts to write to a register.
-void i2cWriteToRegister(uint8_t reg, uint8_t value)
+void onTWIWrite(uint8_t value)
 {
-	switch (reg)
-	{
-		case 2: 
-			i2cReg2 = value;
+	if (currentRegister == 0xFF) {
+		currentRegister = value;
+	} else {
+		switch(currentRegister) {
+			case 2:
+				i2cReg2 = value;
 			break;
-		case 3:
-			i2cReg3 = value;
+			case 3:
+				i2cReg3 = value;
 			break;
+		}
 	}
+}
+
+void onTWIStart(uint8_t value)
+{
+	if (!value) {
+		currentRegister = 0xFF;
+	}
+}
+
+void onTWIStop()
+{
+	currentRegister = 0xFF;
 }
 
 int main()
@@ -73,7 +98,7 @@ int main()
 	// Set the LED pin as output.
 	DDRB |= (1 << LED);
 
-	usiTwiSlaveInit(I2C_SLAVE_ADDR, i2cReadFromRegister, i2cWriteToRegister);
+	usiTwiSlaveInit(I2C_SLAVE_ADDR, onTWIStart, onTWIStop, onTWIRead, onTWIWrite);
 	adcInit();
 	sei();
 

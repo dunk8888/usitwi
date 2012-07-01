@@ -250,8 +250,10 @@ typedef enum
 
 ********************************************************************************/
 
-static uint8_t	(*_onI2CReadFromRegister)(uint8_t reg);
-static void    	(*_onI2CWriteToRegister)(uint8_t reg, uint8_t value);
+static uint8_t (*onTWIRead)();
+static void    	(*onTWIWrite)(uint8_t value);
+static void (*onTWIStop)();
+static void (*onTWIStart)(uint8_t rw);
 
 static uint8_t                  slaveAddress;
 static volatile overflowState_t overflowState;
@@ -270,14 +272,18 @@ static volatile uint8_t 		currentRegister = NO_CURRENT_REGISTER_SET;
 void
 usiTwiSlaveInit(
   	uint8_t ownAddress,
-  	uint8_t	(*onI2CReadFromRegister)(uint8_t reg),
-	void (*onI2CWriteToRegister)(uint8_t reg, uint8_t value)
+  	void	(*_onTWIStart)(uint8_t rw),
+  	void	(*_onTWIStop)(),
+  	uint8_t	(*_onTWIRead)(),
+	void (*_onTWIWrite)(uint8_t value)
 )
 {
-
   slaveAddress = ownAddress;
-  _onI2CReadFromRegister = onI2CReadFromRegister;
-  _onI2CWriteToRegister = onI2CWriteToRegister;
+  
+  onTWIStart = _onTWIStart;
+  onTWIStop = _onTWIStop;
+  onTWIRead = _onTWIRead;
+  onTWIWrite = _onTWIWrite;
 
   // In Two Wire mode (USIWM1, USIWM0 = 1X), the slave USI will pull SCL
   // low when a start condition is detected or a counter overflow (only
@@ -362,7 +368,8 @@ ISR( USI_START_VECTOR )
   }
   else
   {
-    currentRegister = NO_CURRENT_REGISTER_SET;
+
+	onTWIStop();
 
     // a Stop Condition did occur
     USICR =
@@ -413,7 +420,7 @@ ISR( USI_OVERFLOW_VECTOR )
     case USI_SLAVE_CHECK_ADDRESS:
       if ( ( USIDR == 0 ) || ( ( USIDR >> 1 ) == slaveAddress) )
       {
-
+		onTWIStart(USIDR & 0x01);
          if ( USIDR & 0x01 )
         {
           overflowState = USI_SLAVE_SEND_DATA;
@@ -445,9 +452,7 @@ ISR( USI_OVERFLOW_VECTOR )
     // copy data from buffer to USIDR and set USI to shift byte
     // next USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA
     case USI_SLAVE_SEND_DATA:
-	
-	  USIDR = _onI2CReadFromRegister(currentRegister);
-      currentRegister = NO_CURRENT_REGISTER_SET;
+	  USIDR = onTWIRead();
       overflowState = USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA;
       SET_USI_TO_SEND_DATA( );
       break;
@@ -470,22 +475,7 @@ ISR( USI_OVERFLOW_VECTOR )
     // next USI_SLAVE_REQUEST_DATA
     case USI_SLAVE_GET_DATA_AND_SEND_ACK:
 
-	  // The master is writing a value. If we don't have a register yet, it 
-	  // must be writing the register value.
-	  if (currentRegister == NO_CURRENT_REGISTER_SET)
-	  {
-	  	// Store the value as the current register.
-	  	currentRegister = USIDR;
-	  }
-	  else
-	  {
-	  	// We already have a register value, so it must be storing some data.
-	  	_onI2CWriteToRegister(currentRegister, USIDR);
-
-		// Currently we only support writing a single value, so we assume that the
-		// transaction is over.
-		currentRegister = NO_CURRENT_REGISTER_SET;
-	  }
+	  onTWIWrite(USIDR);
 
       // next USI_SLAVE_REQUEST_DATA
       overflowState = USI_SLAVE_REQUEST_DATA;
