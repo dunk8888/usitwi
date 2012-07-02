@@ -144,6 +144,17 @@ int main() {
 }
 ```
 
+## Supported Devices
+
+ * ATtiny
+   * 2313
+   * 25, 45, 85
+   * 26
+   * 261, 461, 861
+ * ATmega
+   * 165, 325, 3250, 645, 6450, 329, 3290
+   * 169
+
 ## Implementation
 See [Application Note AVR312](http://www.atmel.com/Images/doc2560.pdf) for a detailed description of the implementation idea.
 
