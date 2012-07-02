@@ -26,6 +26,7 @@ along with Usitwi.  If not, see <http://www.gnu.org/licenses/>.
 #include <avr/interrupt.h>
 #include <stdbool.h>
 #include "slave.h"
+#include "slave/target.h"
 
 /********************************************************************************
 

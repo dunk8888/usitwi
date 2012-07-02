@@ -22,6 +22,9 @@ along with Usitwi.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+#ifndef _USI_TWI_SLAVE_TARGET_H_
+#define _USI_TWI_SLAVE_TARGET_H_
+
 /* # Targets
  * Target specific defines, e.g. which ports and registers to use.
  */
@@ -114,3 +117,4 @@ along with Usitwi.  If not, see <http://www.gnu.org/licenses/>.
 #  define USI_OVERFLOW_VECTOR USI_OVERFLOW_vect
 #endif
 
+#endif  // ifndef _USI_TWI_SLAVE_TARGET_H_
