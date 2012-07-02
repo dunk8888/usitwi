@@ -3,6 +3,9 @@
 A [TWI](http://en.wikipedia.org/wiki/I%C2%B2C)
 slave driver for Atmel microcontrollers with USI hardware.
 
+This project is a fork from 
+[usi-i2c-slave](https://code.google.com/p/usi-i2c-slave/).
+
 ## Usage
 Usitwi has events for **TWI START**, **TWI STOP**, **TWI READ** and
 **TWI WRITE**.
