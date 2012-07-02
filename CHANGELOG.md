@@ -1,4 +1,4 @@
-### 2012-07-12
+### 2012-07-02
 Replaced register callbacks with more general ones and moved the register
 implementation to an example. The project is now hosted on GitHub.
 
