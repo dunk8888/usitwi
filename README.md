@@ -57,6 +57,7 @@ to the slave. The first argument is the byte that the master transmitted.
 
 ```c
 void onWrite(uint8_t value) {
+
 }
 ```
 
