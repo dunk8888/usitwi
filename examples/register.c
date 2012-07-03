@@ -13,7 +13,17 @@ static volatile uint8_t register2 = 0;
 
 uint8_t currentRegister = NULL_REGISTER;
 
-uint8_t onRead() {
+void usitwi_onStart(uint8_t read) {
+	if (!read) {
+		currentRegister = NULL_REGISTER;
+	}
+}
+
+void usitwi_onStop() {
+	currentRegister = NULL_REGISTER;
+}
+
+uint8_t usitwi_onRead() {
 	switch(currentRegister) {
 		case 0:
 			return register1;
@@ -27,7 +37,7 @@ uint8_t onRead() {
 	}
 }
 
-void onWrite(uint8_t value) {
+void usitwi_onWrite(uint8_t value) {
 	if (currentRegister == NULL_REGISTER) {
 		currentRegister = value;
 	} else {
@@ -42,20 +52,12 @@ void onWrite(uint8_t value) {
 	}
 }
 
-void onStart(uint8_t read) {
-	if (!read) {
-		currentRegister = NULL_REGISTER;
-	}
-}
-
-void onStop() {
-	currentRegister = NULL_REGISTER;
-}
+uint8_t usitwi_address = 0x42;
 
 int main() {
 	DDRB |= (1 << LED);
 
-	usiTwiSlaveInit(0x42, onStart, onStop, onRead, onWrite);
+	usitwi_init();
 
 	sei();
 
