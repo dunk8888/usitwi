@@ -33,4 +33,4 @@ void usiTwiSlaveInit(
 	void    (*onTWIWrite)(uint8_t value)
 );
 
-#endif  // ifndef _USI_TWI_SLAVE_H_
+#endif

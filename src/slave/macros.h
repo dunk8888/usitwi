@@ -22,8 +22,7 @@ along with Usitwi.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#define SET_USI_TO_SEND_ACK( ) \
-{ \
+#define SET_USI_TO_SEND_ACK() { \
 	/* prepare ACK */ \
 	USIDR = 0; \
 	/* set SDA as output */ \
@@ -37,8 +36,7 @@ along with Usitwi.  If not, see <http://www.gnu.org/licenses/>.
 		( 0x0E << USICNT0 ); \
 }
 
-#define SET_USI_TO_READ_ACK( ) \
-{ \
+#define SET_USI_TO_READ_ACK() { \
 	/* set SDA as input */ \
 	DDR_USI &= ~( 1 << PORT_USI_SDA ); \
 	/* prepare ACK */ \
@@ -53,8 +51,7 @@ along with Usitwi.  If not, see <http://www.gnu.org/licenses/>.
 		( 0x0E << USICNT0 ); \
 }
 
-#define SET_USI_TO_TWI_START_CONDITION_MODE( ) \
-{ \
+#define SET_USI_TO_TWI_START_CONDITION_MODE() { \
 	USICR = \
 		/* enable Start Condition Interrupt, disable Overflow Interrupt */ \
 		( 1 << USISIE ) | ( 0 << USIOIE ) | \
@@ -71,8 +68,7 @@ along with Usitwi.  If not, see <http://www.gnu.org/licenses/>.
 		( 1 << USIDC ) | ( 0x0 << USICNT0 ); \
 }
 
-#define SET_USI_TO_SEND_DATA( ) \
-{ \
+#define SET_USI_TO_SEND_DATA() { \
 	/* set SDA as output */ \
 	DDR_USI |=  ( 1 << PORT_USI_SDA ); \
 	/* clear all interrupt flags, except Start Cond */ \
@@ -83,8 +79,7 @@ along with Usitwi.  If not, see <http://www.gnu.org/licenses/>.
 		( 0x0 << USICNT0 ); \
 }
 
-#define SET_USI_TO_READ_DATA( ) \
-{ \
+#define SET_USI_TO_READ_DATA() { \
 	/* set SDA as input */ \
 	DDR_USI &= ~( 1 << PORT_USI_SDA ); \
 	/* clear all interrupt flags, except Start Cond */ \

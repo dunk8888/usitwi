@@ -43,8 +43,8 @@ along with Usitwi.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 
 #if defined( __AVR_ATtiny25__ ) | \
-     defined( __AVR_ATtiny45__ ) | \
-     defined( __AVR_ATtiny85__ )
+    defined( __AVR_ATtiny45__ ) | \
+    defined( __AVR_ATtiny85__ )
 #  define DDR_USI             DDRB
 #  define PORT_USI            PORTB
 #  define PIN_USI             PINB
@@ -71,8 +71,8 @@ along with Usitwi.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 
 #if defined( __AVR_ATtiny261__ ) | \
-     defined( __AVR_ATtiny461__ ) | \
-     defined( __AVR_ATtiny861__ )
+    defined( __AVR_ATtiny461__ ) | \
+    defined( __AVR_ATtiny861__ )
 #  define DDR_USI             DDRB
 #  define PORT_USI            PORTB
 #  define PIN_USI             PINB
@@ -86,12 +86,12 @@ along with Usitwi.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 
 #if defined( __AVR_ATmega165__ ) | \
-     defined( __AVR_ATmega325__ ) | \
-     defined( __AVR_ATmega3250__ ) | \
-     defined( __AVR_ATmega645__ ) | \
-     defined( __AVR_ATmega6450__ ) | \
-     defined( __AVR_ATmega329__ ) | \
-     defined( __AVR_ATmega3290__ )
+    defined( __AVR_ATmega325__ ) | \
+    defined( __AVR_ATmega3250__ ) | \
+    defined( __AVR_ATmega645__ ) | \
+    defined( __AVR_ATmega6450__ ) | \
+    defined( __AVR_ATmega329__ ) | \
+    defined( __AVR_ATmega3290__ )
 #  define DDR_USI             DDRE
 #  define PORT_USI            PORTE
 #  define PIN_USI             PINE
@@ -117,4 +117,4 @@ along with Usitwi.  If not, see <http://www.gnu.org/licenses/>.
 #  define USI_OVERFLOW_VECTOR USI_OVERFLOW_vect
 #endif
 
-#endif  // ifndef _USI_TWI_SLAVE_TARGET_H_
+#endif
