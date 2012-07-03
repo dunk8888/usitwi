@@ -45,17 +45,17 @@ static volatile overflowState_t overflowState;
 /*
  * # TWI Interface
  */
-extern uint8_t TWI_slaveAddress;
-extern uint8_t TWI_onRead();
-extern void    TWI_onWrite(uint8_t value);
-extern void    TWI_onStart(uint8_t rw);
-extern void    TWI_onStop();
+extern uint8_t usitwi_address;
+extern uint8_t usitwi_onRead();
+extern void    usitwi_onWrite(uint8_t value);
+extern void    usitwi_onStart(uint8_t rw);
+extern void    usitwi_onStop();
 
 /*
  * # Initializing
  * initialise USI for TWI slave mode
  */
-void TWI_slaveInit() {
+void usitwi_init() {
 
 	// ## Mode of Operation
 	// In Two Wire mode (USIWM1, USIWM0 = 1X), the slave USI will pull SCL
@@ -134,7 +134,7 @@ ISR(USI_START_VECTOR) {
 	} else {
 
 		// a Stop Condition did occur
-		TWI_onStop();
+		usitwi_onStop();
 
 		USICR =
 			// enable Start Condition Interrupt
@@ -174,8 +174,8 @@ ISR( USI_OVERFLOW_VECTOR ) {
 	// check address and send ACK (and next USI_SLAVE_SEND_DATA) if OK, else
 	// reset USI
 	case USI_SLAVE_CHECK_ADDRESS:
-		if ( ( USIDR == 0 ) || ( ( USIDR >> 1 ) == TWI_slaveAddress) ) {
-			TWI_onStart(USIDR & 0x01);
+		if ( ( USIDR == 0 ) || ( ( USIDR >> 1 ) == usitwi_address) ) {
+			usitwi_onStart(USIDR & 0x01);
 			if ( USIDR & 0x01 ) {
 				overflowState = USI_SLAVE_SEND_DATA;
 			} else {
@@ -202,7 +202,7 @@ ISR( USI_OVERFLOW_VECTOR ) {
 	// copy data from buffer to USIDR and set USI to shift byte
 	// next USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA
 	case USI_SLAVE_SEND_DATA:
-		USIDR = TWI_onRead();
+		USIDR = usitwi_onRead();
 		overflowState = USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA;
 		SET_USI_TO_SEND_DATA( );
 	break;
@@ -224,7 +224,7 @@ ISR( USI_OVERFLOW_VECTOR ) {
 	// copy data from USIDR and send ACK
 	// next USI_SLAVE_REQUEST_DATA
 	case USI_SLAVE_GET_DATA_AND_SEND_ACK:
-		TWI_onWrite(USIDR);
+		usitwi_onWrite(USIDR);
 		// next USI_SLAVE_REQUEST_DATA
 		overflowState = USI_SLAVE_REQUEST_DATA;
 		SET_USI_TO_SEND_ACK( );

@@ -23,54 +23,54 @@ This variable stores the slave TWI address.
 uint8_t TWI_slaveAddress = 0x42;
 ```
 
-#### TWI_slaveInit
+#### usitwi_init
 
 This is the initialization of the TWI stack. It will initialize the necessary
 port pins and interrupts.
 
 ```c
-TWI_slaveInit();
+usitwi_init();
 ```
 
-#### TWI_onStart
+#### usitwi_onStart
 
-The `TWI_onStart` function is called, when a TWI start condition is detected.
+The `usitwi_onStart` function is called, when a TWI start condition is detected.
 The first argument is `1` if the master wants to read and `0` otherwise.
 
 ```c
-void TWI_onStart(uint8_t read) {
+void usitwi_onStart(uint8_t read) {
 
 }
 ```
 
-#### TWI_onStop
+#### usitwi_onStop
 
-The `TWI_onStop` function is called, when a TWI stop condition is detected.
+The `usitwi_onStop` function is called, when a TWI stop condition is detected.
 
 ```c
-void TWI_onStop() {
+void usitwi_onStop() {
 
 }
 ```
 
-#### TWI_onRead
+#### usitwi_onRead
 
-The `TWI_onRead` function is called, when the master wants to read a byte from
+The `usitwi_onRead` function is called, when the master wants to read a byte from
 the slave. The return value is the byte that will be sent to the master.
 
 ```c
-uint8_t TWI_onRead() {
+uint8_t usitwi_onRead() {
 	return 0x42;
 }
 ```
 
-#### TWI_onWrite
+#### usitwi_onWrite
 
-The `TWI_onWrite` function is called, when the master wants to write a byte
+The `usitwi_onWrite` function is called, when the master wants to write a byte
 to the slave. The first argument is the byte that the master transmitted.
 
 ```c
-void TWI_onWrite(uint8_t value) {
+void usitwi_onWrite(uint8_t value) {
 
 }
 ```
@@ -88,76 +88,6 @@ registers are equal.
 The microcontroller runs at 8MHz and the TWI slave address is `0x42`.
 
 ```c
-#define F_CPU 8000000UL
-
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include "../src/slave.h"
-
-#define LED PB1
-
-#define NULL_REGISTER 0xFF
-
-static volatile uint8_t register1 = 0;
-static volatile uint8_t register2 = 0;
-
-uint8_t currentRegister = NULL_REGISTER;
-
-uint8_t TWI_onRead() {
-	switch(currentRegister) {
-		case 0:
-			return register1;
-		break;
-		case 1:
-			return register2;
-		break;
-		default:
-			return 0xFF;
-		break;
-	}
-}
-
-void TWI_onWrite(uint8_t value) {
-	if (currentRegister == NULL_REGISTER) {
-		currentRegister = value;
-	} else {
-		switch(currentRegister) {
-			case 0:
-				register1 = value;
-			break;
-			case 1:
-				register2 = value;
-			break;
-		}
-	}
-}
-
-void TWI_onStart(uint8_t read) {
-	if (!read) {
-		currentRegister = NULL_REGISTER;
-	}
-}
-
-void TWI_onStop() {
-	currentRegister = NULL_REGISTER;
-}
-
-uint8_t TWI_slaveAddress = 0x42;
-
-int main() {
-	DDRB |= (1 << LED);
-
-	TWI_slaveInit();
-
-	sei();
-
-	while (1) {
-		if (register1 == register2)
-			PORTB |= 1 << LED;
-		else
-			PORTB &= ~(1 << LED);
-	}
-}
 ```
 
 ## Supported Devices
