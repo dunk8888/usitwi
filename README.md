@@ -10,56 +10,67 @@ This project is a fork from
 Usitwi has events for **TWI START**, **TWI STOP**, **TWI READ** and
 **TWI WRITE**.
 
-### Function Description
+To use Usitwi you have to provide a `TWI_slaveAddress` variable and implement
+the functions `TWI_onStart`, `TWI_onStop`, `TWI_onRead` and `TWI_onWrite`.
 
-#### usiTwiSlaveInit
+### Usitwi Interface
 
-This is the initialization of the TWI stack. This function takes the
-**twi address** of the slave and a function for each event.
+#### TWI_slaveAddress
+
+This variable stores the slave TWI address.
 
 ```c
-usiTwiSlaveInit(0x42, onStart, onStop, onRead, onWrite);
+uint8_t TWI_slaveAddress = 0x42;
 ```
 
-#### onStart
+#### TWI_slaveInit
 
-The `onStart` function is called, when a TWI start condition is detected.
+This is the initialization of the TWI stack. It will initialize the necessary
+port pins and interrupts.
+
+```c
+TWI_slaveInit();
+```
+
+#### TWI_onStart
+
+The `TWI_onStart` function is called, when a TWI start condition is detected.
 The first argument is `1` if the master wants to read and `0` otherwise.
 
 ```c
-void onStart(uint8_t read) {
+void TWI_onStart(uint8_t read) {
 
 }
 ```
 
-#### onStop
+#### TWI_onStop
 
-The `onStop` function is called, when a TWI stop condition is detected.
+The `TWI_onStop` function is called, when a TWI stop condition is detected.
 
 ```c
-void onStop() {
+void TWI_onStop() {
 
 }
 ```
 
-#### onRead
+#### TWI_onRead
 
-The `onRead` function is called, when the master wants to read a byte from
+The `TWI_onRead` function is called, when the master wants to read a byte from
 the slave. The return value is the byte that will be sent to the master.
 
 ```c
-uint8_t onRead() {
+uint8_t TWI_onRead() {
 	return 0x42;
 }
 ```
 
-#### onWrite
+#### TWI_onWrite
 
-The `onWrite` function is called, when the master wants to write a byte
+The `TWI_onWrite` function is called, when the master wants to write a byte
 to the slave. The first argument is the byte that the master transmitted.
 
 ```c
-void onWrite(uint8_t value) {
+void TWI_onWrite(uint8_t value) {
 
 }
 ```
@@ -92,7 +103,7 @@ static volatile uint8_t register2 = 0;
 
 uint8_t currentRegister = NULL_REGISTER;
 
-uint8_t onRead() {
+uint8_t TWI_onRead() {
 	switch(currentRegister) {
 		case 0:
 			return register1;
@@ -106,7 +117,7 @@ uint8_t onRead() {
 	}
 }
 
-void onWrite(uint8_t value) {
+void TWI_onWrite(uint8_t value) {
 	if (currentRegister == NULL_REGISTER) {
 		currentRegister = value;
 	} else {
@@ -121,20 +132,22 @@ void onWrite(uint8_t value) {
 	}
 }
 
-void onStart(uint8_t read) {
+void TWI_onStart(uint8_t read) {
 	if (!read) {
 		currentRegister = NULL_REGISTER;
 	}
 }
 
-void onStop() {
+void TWI_onStop() {
 	currentRegister = NULL_REGISTER;
 }
+
+uint8_t TWI_slaveAddress = 0x42;
 
 int main() {
 	DDRB |= (1 << LED);
 
-	usiTwiSlaveInit(0x42, onStart, onStop, onRead, onWrite);
+	TWI_slaveInit();
 
 	sei();
 

@@ -25,12 +25,6 @@ along with Usitwi.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef _USI_TWI_SLAVE_H_
 #define _USI_TWI_SLAVE_H_
 
-void usiTwiSlaveInit(
-	uint8_t,
-	void    (*onTWIStart)(uint8_t rw),
-	void    (*onTWIStop)(),
-	uint8_t (*onTWIRead)(),
-	void    (*onTWIWrite)(uint8_t value)
-);
+void usiTwiSlaveInit();
 
 #endif
