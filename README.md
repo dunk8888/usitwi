@@ -10,17 +10,17 @@ This project is a fork from
 Usitwi has events for **TWI START**, **TWI STOP**, **TWI READ** and
 **TWI WRITE**.
 
-To use Usitwi you have to provide a `TWI_slaveAddress` variable and implement
-the functions `TWI_onStart`, `TWI_onStop`, `TWI_onRead` and `TWI_onWrite`.
+To use Usitwi you have to provide a `usitwi_address` variable and implement
+the functions `usitwi_onStart`, `usitwi_onStop`, `usitwi_onRead` and `usitwi_onWrite`.
 
 ### Usitwi Interface
 
-#### TWI_slaveAddress
+#### usitwi_address
 
 This variable stores the slave TWI address.
 
 ```c
-uint8_t TWI_slaveAddress = 0x42;
+uint8_t usitwi_address = 0x42;
 ```
 
 #### usitwi_init
