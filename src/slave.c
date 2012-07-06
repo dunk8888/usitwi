@@ -32,12 +32,12 @@ along with Usitwi.  If not, see <http://www.gnu.org/licenses/>.
  * # States
  */
 typedef enum {
-	USI_SLAVE_CHECK_ADDRESS                = 0x00,
-	USI_SLAVE_SEND_DATA                    = 0x01,
-	USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA = 0x02,
-	USI_SLAVE_CHECK_REPLY_FROM_SEND_DATA   = 0x03,
-	USI_SLAVE_REQUEST_DATA                 = 0x04,
-	USI_SLAVE_GET_DATA_AND_SEND_ACK        = 0x05
+	USI_SLAVE_CHECK_ADDRESS,
+	USI_SLAVE_SEND_DATA,
+	USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA,
+	USI_SLAVE_CHECK_REPLY_FROM_SEND_DATA,
+	USI_SLAVE_REQUEST_DATA,
+	USI_SLAVE_GET_DATA_AND_SEND_ACK
 } overflowState_t;
 
 static volatile overflowState_t overflowState;
