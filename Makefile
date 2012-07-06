@@ -1,7 +1,7 @@
 MMCU=attiny85
 CC=avr-gcc
 OBJCPY=avr-objcopy
-AVRDUDE=sudo avrdude
+AVRDUDE=avrdude
 AVRSIZE=avr-size
 
 compile:
@@ -11,7 +11,7 @@ compile:
 	$(AVRSIZE) -A -t out/register.elf
 
 program:
-	$(AVRDUDE) -c usbasp -p $(MMCU) -v -e -U flash:w:out/register.hex
+	$(AVRDUDE) -p $(MMCU) -v -e -U flash:w:out/register.hex
 
 clean:
 	rm -f out/*.o out/*.elf out/*.hex
