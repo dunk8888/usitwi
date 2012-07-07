@@ -176,5 +176,5 @@ See [Application Note AVR312](http://www.atmel.com/Images/doc2560.pdf) for a det
 
 ## Licence
 
-[GPLv3](http://www.gnu.org/licenses/gpl.html)
+[GPLv3](http://www.gnu.org/licenses/gpl.html).
 
