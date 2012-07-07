@@ -2,7 +2,7 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "../src/slave.h"
+#include "../../src/slave.h"
 
 #define LED PB1
 
