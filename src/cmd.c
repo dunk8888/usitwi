@@ -34,7 +34,7 @@ extern volatile uint8_t     cmd_buffer[7];
 extern volatile int8_t      cmd_args;
 extern volatile int8_t      cmd_rets;
 extern void               (*cmd_function)();
-extern inline void          cmd_lookup(uint8_t cmd);
+extern void                 cmd_lookup(uint8_t cmd);
 
 void usitwi_onStart(uint8_t read) {
 	if (!read) {
