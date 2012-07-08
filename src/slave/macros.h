@@ -22,6 +22,8 @@ along with Usitwi.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+#include "target.h"
+
 #define SET_USI_TO_SEND_ACK() { \
 	/* prepare ACK */ \
 	USIDR = 0; \
@@ -90,3 +92,10 @@ along with Usitwi.  If not, see <http://www.gnu.org/licenses/>.
 		( 0x0 << USICNT0 ); \
 }
 
+#define STRETCH_CLOCK() { \
+	PORT_USI &= ~(1 << PORT_USI_SCL); \
+}
+
+#define RELEASE_CLOCK() { \
+	PORT_USI |=  (1 << PORT_USI_SCL); \
+}

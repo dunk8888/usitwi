@@ -168,6 +168,8 @@ ISR(USI_START_VECTOR) {
  */
 ISR( USI_OVERFLOW_VECTOR ) {
 
+	uint8_t tmp;
+
 	switch ( overflowState ) {
 
 	// ## Address Mode
@@ -202,9 +204,11 @@ ISR( USI_OVERFLOW_VECTOR ) {
 	// copy data from buffer to USIDR and set USI to shift byte
 	// next USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA
 	case USI_SLAVE_SEND_DATA:
+		STRETCH_CLOCK();
 		USIDR = usitwi_onRead();
 		overflowState = USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA;
 		SET_USI_TO_SEND_DATA( );
+		RELEASE_CLOCK();
 	break;
 
 	// set USI to sample reply from master
@@ -224,10 +228,11 @@ ISR( USI_OVERFLOW_VECTOR ) {
 	// copy data from USIDR and send ACK
 	// next USI_SLAVE_REQUEST_DATA
 	case USI_SLAVE_GET_DATA_AND_SEND_ACK:
-		usitwi_onWrite(USIDR);
 		// next USI_SLAVE_REQUEST_DATA
+		tmp = USIDR;
 		overflowState = USI_SLAVE_REQUEST_DATA;
 		SET_USI_TO_SEND_ACK( );
+		usitwi_onWrite(tmp);
 	break;
 
 	}
